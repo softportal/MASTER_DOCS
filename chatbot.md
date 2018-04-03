@@ -19,6 +19,7 @@ Esta memoría es el resultado de una práctica de Inteligencia Artificial del Ma
 * IBM Watson (PAS)
 * NodeJS (Backend)
 * Mongodb (Storage)
+* pgp (Credentials Encryption)
 
 Por desgracía entendimos tarde la participación individual de la práctica, por lo tanto y aunque en un principio el trabajo fuera único se ha decidido que:
 
@@ -26,15 +27,14 @@ Por desgracía entendimos tarde la participación individual de la práctica, po
 * Se ampliara el trabajo para la realización de dos memorias que tendrán una parte común partiendo de la primera.
 * El resultado final serán 2 aplicaciones con una infrastura similar que es la que hemos probado y aprendido juntos de entre las que ofrece IBM
 
-Se da además la circunstancia de que estoy haciendo prácticas en IBM por lo que no me ha sido difícil informarme de como integrar un bot en una infraestructura, la [solución](https://console.bluemix.net/docs/services/conversation/develop-app.html#building-a-client-application) que se me propuso, consiste en implementar un orquestador, que básicamente es un cliente del bot, que a través de una API que ofrece IBM Watson para cada bot, identificándolo con el _workspaceId_, _clientId_ y _password_, gestiona la comunicación entre el usuario y el bot, recibiendo de este además toda la información asociada al procesamiento del lenguaje (parámetros del parrafo anterior) reconocida por el mismo.
+Se da además la circunstancia de que uno de nosotros está haciendo prácticas en IBM por lo que no nos ha sido difícil informarnos de como integrar un bot en una infraestructura, la [solución](https://console.bluemix.net/docs/services/conversation/develop-app.html#building-a-client-application) que se nos propuso, consiste en implementar un orquestador, que básicamente es un cliente del bot, que a través de una API que ofrece IBM Watson para cada bot, identificándolo con el _workspaceId_, _clientId_ y _password_, gestiona la comunicación entre el usuario y el bot, recibiendo de este además toda la información asociada al procesamiento del lenguaje (parámetros del parrafo anterior) reconocida por el mismo.
 
-Consideramos que el objetivo de la práctica consistía en desarrollar un chatbot cada uno, y la parte común de ambos trabajos se limita a la investigación y desarrollo de la aproximación que mencionamos en el parrafo anterior. La parte característica de cada uno, toda la información relativa al diseño y entrenamiento de cada bot, que se explica en el apartado de desarrollo de cada memoria.
+Consideramos que el objetivo de la práctica consistía en desarrollar un chatbot cada uno, y la parte común de ambos trabajos se limita a la investigación y desarrollo de la aproximación que mencionamos en el parrafo anterior. En cuanto a la parte característica de cada uno, toda la información relativa al diseño y entrenamiento de cada bot, que se explica en el apartado de desarrollo de cada memoria.
 
 #### Alumnos implicados
 
 * Lucas Segarra Fernández
 * Sergio Semedi Barranco
-
 
 \newpage
 
@@ -48,7 +48,7 @@ De esta forma, ese mismo orquestador puede, cuando ya haya identificado las inte
 
 ### IBM Watson
 
-
+#### Infraestructura
 
 \newpage
 
@@ -57,6 +57,44 @@ De esta forma, ese mismo orquestador puede, cuando ya haya identificado las inte
 Esta aproximación es independiente al chatbot y fuente de conocimiento que se utilicen, y aunque finalmente vamos a entregar una práctica cada uno, como la invesigamos juntos y la vamos a utilizar en ambas prácticas, consideramos más honesto entregar esta parte de la memoria común.
 
 \newpage
+
+#### Configuración y entrenamiento del chatbot
+
+Accederemos a través de la API de Watson a nuestro bot la interacción del mismo con nuestro _orquestador_, depende de como hayamos configurado al primero en la web GUI.
+
+Dicha interfaz permite la definición de __entidades__ que representan conceptos relacionados con la temática del bot y facilitan su reconocimiento por parte de éste. La plataforma tambén ofrece la posibilidad de utilizar entidades _del sistema_ como tiempo, números etc.
+
+Para facilitar la detección de las intenciones del usuario, y la _clusterización_ que el servicio hará de la interacción con aquel, definimos __intends__ cada uno de los cuales se corresponde con una posible intención del usuario (i.e. saludar).
+
+Definidos intenciones y entidades, se definen nodos de __diálogo__ para determinar la respuesta y tratamiento del servicio las entidades e intenciones reconocidas. Una vez configurado el diálogo, se procede al __entrenamiento__ del bot para guiarlo y facilitar la _clusterización_ que mencionamos previamente.
+
+\newpage
+
+#### Características particulares del recomendador de restaurantes
+
+Este apartado recoge la información relativa al bot desarrollado con dicho objetivo y que se va a entregar como tal parte en la solución de Lucas Segarra.
+
+Para realizar la recomendación el servicio recogerá las preferencias del usuario en cuanto a precio, localización y tipo de comida que ofrece el restaurante.
+
+Configuramos una base de datos en la que intrujimos restaurantes (incluyendo tal información de los mismos) que hemos utilizado como __fuente de conocimiento__.
+
+En cuanto a las __entidades definidas__, utilizamos una para cada uno de los tres parámetros que utiliza el bot para hacer la recomendación.
+
+![Entidades recomendador de restaurantes](restaurantEntities.png)
+
+\newpage
+
+Las __intenciones del usuario__ que pretendemos reconocer, son manifestaciones del mismo sobre sus preferencias para tales parámetros.
+
+![Intenciones recomendador de restaurantes](restaurantIntents.png)
+
+\newpage
+
+La estructura del __diálogo__ es plana y los _nodos de salida_ están definidos en las posiciones superiores para que sean los primeros con los que se haga el _matcheo_, no necesitamos que sean hijos de otros nodos porque envíamos desde el cliente el contexto reconocido por el bot. Para ello, en el resto de nodos, damos desde el bot valores a determinadas variables que envíamos al _orquestador_ en función de las entidades e intenciones reconocidas.
+
+![Diálogo recomendador de restaurantes: nodos iniciales](restaurantDialog1.png)
+
+![Diálogo recomendador de restaurantes: nodos finales](restaurantDialog2.png)
 
 ## Datapath
 
