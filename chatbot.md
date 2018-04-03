@@ -96,6 +96,8 @@ La estructura del __diálogo__ es plana y los _nodos de salida_ están definidos
 
 ![Diálogo recomendador de restaurantes: nodos finales](restaurantDialog2.png)
 
+\pagebreak
+
 ## Datapath
 
 Como se menciona anteriormente la comunicación entre el usuario y el chatbot se realiza a través de el orquestador desarrollado en javascript. La API a la que nos referimos en todo este documento es de tipo REST y la información se intercambia en formato _JSON_.
