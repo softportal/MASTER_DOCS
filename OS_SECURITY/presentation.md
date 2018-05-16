@@ -1,9 +1,9 @@
-# Tema Presentación
+# Tema Presentación Resumen
 
     SERGIO A SEMEDI BARRANCO <ssemedi@ucm.es>
     LUCAS SEGARRA FERNANDEZ <lsegar01@ucm.es>
 
-Basicamente es un SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecutar untrusted code.
+SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecutar untrusted code.
 
 ## Porque el SO? y por que es dificil confiar en lo actual?
 #### Por que Qube OS respecto a lo clasico (kernel monoliticOS)
@@ -35,6 +35,14 @@ Podemos distinguirlos en dos:
 Desde el punto de vista de la seguridad interesa **bare metal**
 
 ####  detalles tecnicos comparativos XEN - KVM
+
+Basicamente Comparamos una arquitectura Linux based (kvm) que funciona con el scheduler y los user processes de linux sumados al modulo del kernel (hardware) con XEN:
+
+    * small footprint, interface -> microkernel design
+    * Linux based (Linux system running as dom0)
+    * Driver isolation: main device driver for a system to run inside of a virtual machine
+    * Paravirtualization: Fully paravirtualized guests have been optimized to run as a virtual machin 
+
 #### Gestion de memoria / espacio direcciones
 #### IO emulator
 
@@ -51,3 +59,6 @@ Desde el punto de vista de la seguridad interesa **bare metal**
 * qubes-os.org
 * Manual pdf arquitectura QUBE OS
 * Hacker News
+* doc.opensuse.org/documentation/leap/virtualization/html/book.virt/cha.kvm.intro.html
+* researchgate.net/figure/Xen-architecture-29_fig4_261411692
+* wiki.xen.org/wiki/Xen_Project_Software_Overview
