@@ -1,41 +1,53 @@
-# Tema Presentación y dudas.  SERGIO A SEMEDI BARRANCO <ssemedi@ucm.es>
+# Tema Presentación
+
+    SERGIO A SEMEDI BARRANCO <ssemedi@ucm.es>
+    LUCAS SEGARRA FERNANDEZ <lsegar01@ucm.es>
 
 Basicamente es un SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecutar untrusted code.
 
-Linux es muy clave tal y cual + mostrar puntos.
-
-## Porque el SO? (Obvio) y por que es dificil confiar en lo actual?
+## Porque el SO? y por que es dificil confiar en lo actual?
 #### Por que Qube OS respecto a lo clasico (kernel monoliticOS)
 
-Trending OS son basura normalmente vienen hasta preinstalados en hardware y ya compilados por lo tanto son unos hijos de puta por temas de seguridad.
+Estamos acostumbrados a los trending OSs que vienen hasta preinstalados en hardware y ya compilados (algunos casos) en el que solo tienes el binario, además la arquitectura monolítica del Os no facilitan las labores de seguridad
 
-Examples: 
-           COrreo con viruses
+Ejemplos punto de entrada:
+
+           Correo
            Navegacion no deseada
-           NICS WIFI
-           Eres retard
+           Nic -> Wifi
+           Vulnerabilidades Software
+           ...
 
-Linux vs Windows -> Libre vs Privativo, windows = shit
-
-QUBEOS es un SO -> Desktop (personal use) orientado a seguridad aprovechando isolation de un baremetal hypervisor como puede ser Xen proyecto libre + IntelVd (hardware)
-
-
-Qubeos = Kernel linux + Xen + VT
+Clave en cierta medida para la seguridad => Software libre (Community based).
 
 
+QUBEOS es un SO Desktop (personal use) orientado a seguridad aprovechando la isolation de un hypervisor baremetal como puede ser el Proyecto libre X en + IntelVd (hardware)
 
 
+## Introducción basica hypervisores
 
+Hypervisor es software, firmware or hardware que permite la creación de maquinas virtuales.
+Podemos distinguirlos en dos:
 
+* bare metal: Actuan sobre el propio HW
+* hosted: Estan por encima del SO
 
-## Introducción basica hypervisores 
+Desde el punto de vista de la seguridad interesa **bare metal**
+
 ####  detalles tecnicos comparativos XEN - KVM
 #### Gestion de memoria / espacio direcciones
 #### IO emulator
 
 ## Arquitectura QUBE OS orientada seguridad
 #### servidores X
-#### networking, 
+#### networking,
     - File System
     - storage
     ...
+
+## Fuentes:
+
+* Wikipedia.com
+* qubes-os.org
+* Manual pdf arquitectura QUBE OS
+* Hacker News
