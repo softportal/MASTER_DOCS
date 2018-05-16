@@ -5,6 +5,10 @@
 
 SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecutar untrusted code.
 
+## [Presentacion](http://slides.com/master_iot/qube)
+
+Aqui se detallarán aspectos más técnicos sobre QUBEOS, a continuación se ofrece la memoria resumen.
+
 ## Porque el SO? y por que es dificil confiar en lo actual?
 #### Por que Qube OS respecto a lo clasico (kernel monoliticOS)
 
