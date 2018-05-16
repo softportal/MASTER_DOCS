@@ -43,15 +43,58 @@ Basicamente Comparamos una arquitectura Linux based (kvm) que funciona con el sc
     * Driver isolation: main device driver for a system to run inside of a virtual machine
     * Paravirtualization: Fully paravirtualized guests have been optimized to run as a virtual machin 
 
-#### Gestion de memoria / espacio direcciones
-#### IO emulator
+#### Gestion de memoria / espacio direcciones | IO EMULATOR
 
 ## Arquitectura QUBE OS orientada seguridad
-#### servidores X
+
+Implementa una estrategia de seguridad por aislamiento, para ello usa las tecnologías vistas anteriormente (Xen, Linux, Vt...) sumado a una arquitectura basada en dominios.
+
+- Networking subsystem (IOMMU/VT-d).
+- Storage subsystem
+    - USB y Drivers parecdos aislados en una maquina virtual sin privilegios.
+- Graphics
+- User Apps/VMs
+
+Esto hace que comprometer cualquiera de los sistemas aislados no suponga un peligro real global.
+
+### Algunos Sistemas
+
+#### AppVM
+
+Aplicaciones directas para el usuario que podrá usar como quiera, cada una tiene su espacio de dominio aislado.
+Ahorro de Disco based, las aplicaicones pueden compartir un FS RO.
+
+Para separar cualquier tipo de problema relacionado con el FS tenemos el Storage domain.
+
+#### storage
+
+QubeOs siempre tratará de hacer un uso del disco (hardware) óptimo, empleara técnicas como pueden ser un Copy-on-write Filesystem.
+
+Esta clase de arquitectura es insegura de tener en el dominio administrativo.
+
+Tiene acceso al controlador de disco/USB o CD/DVD.
+
+#### GUI X
+
+Este dominio accede directamente a los graficos del dispositivos y además IO como puede ser el raton o el teclado.
+Sera por lo tanto el encargado de lanzar un Servidor X.
+
+Qube OS Usa un app viewer que te permite interactuar con el X server de forma independiente para cada AppVM.
+
+Este dominio es muy importante a nivel de ser comprometido por lo tanto **no debería ejecutar código externo**.
+
 #### networking,
-    - File System
-    - storage
-    ...
+
+Aqui encontramos lo referente a la parte de redes (drivers NICS, stacks de protocolos como 802.11, tcp/ip...).
+Interactua con las NICs físicas mediante un dominio (network domain) sin privilegios, todo gracias a Vt-d.
+
+
+#### Reflexión.
+
+QubeOs es un sistema operativo razonablemente seguro, que juntando varias tecnologias consigue ser una optativa bastante deseable en cuanto a cualquier uso informático orientado a Desktop se refiere.
+
+Se detallarán mas detalles técnicos en la presentación al igual de un caso de uso.
+
 
 ## Fuentes:
 
