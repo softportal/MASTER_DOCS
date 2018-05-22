@@ -2,13 +2,16 @@
 
 QubeOs: SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecutar untrusted code.
 
-![alt text](https://raw.githubusercontent.com/softportal/MASTER_DOCS/master/OS_SECURITY/qubeosLogo.png)
+
+![Portada](qubeosLogo.png)
+
 
 ## Alumnos
     SERGIO A SEMEDI BARRANCO <ssemedi@ucm.es>
     LUCAS SEGARRA FERNANDEZ <lsegar01@ucm.es>
 
 
+\newpage
 ## INDICE
 
 * ¿Que es?
@@ -20,7 +23,10 @@ QubeOs: SO centrado en la seguridad personal del usuario sobre todo a la hora de
 * ¿Que es?
 
 
-## [Presentación](http://slides.com/master_iot/qube)
+## RESUMEN
+### [Presentación](http://slides.com/master_iot/qube)
+
+\newpage
 
 Enlace a los slides utilizados para la presentación de clase.
 
@@ -45,7 +51,6 @@ Parece más sencillo conseguir cierto aislamiento entre algunos de los procesos 
 
 Estamos acostumbrados a los trending OSs que vienen hasta preinstalados en hardware y ya compilados (algunos casos) en el que solo tienes el binario, además la arquitectura monolítica del Os no facilitan las labores de seguridad
 
-![alt text](https://raw.github.com/softportal/MASTER_DOCS/blob/master/OS_SECURITY/monolithic.jpg)
 
 Ejemplos punto de entrada:
 
@@ -67,7 +72,6 @@ Podemos distinguirlos en dos:
 * bare metal: Actuan sobre el propio HW
 * hosted: Estan por encima del SO
 
-![alt text](https://raw.githubusercontent.com/softportal/MASTER_DOCS/master/OS_SECURITY/hyperviseur.png)
 
 Desde el punto de vista de la seguridad interesa **bare metal**
 
