@@ -1,18 +1,41 @@
 # Tema Presentación Resumen
 
+QubeOs: SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecutar untrusted code.
+
+![alt text](https://github.com/softportal/MASTER_DOCS/blob/master/OS_SECURITY/qubeosLogo.png)
+
+## Alumnos
     SERGIO A SEMEDI BARRANCO <ssemedi@ucm.es>
     LUCAS SEGARRA FERNANDEZ <lsegar01@ucm.es>
 
-SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecutar untrusted code.
+\pagebreak
 
 ## [Presentacion](http://slides.com/master_iot/qube)
 
-Aqui se detallarán aspectos más técnicos sobre QUBEOS, a continuación se ofrece la memoria resumen.
+Enlace a los slides utilizados para la presentación de clase.
 
-## Porque el SO? y por que es dificil confiar en lo actual?
+### ¿Qué es QubeOs?
+
+* Es un sistema operativo orientado a la seguridad.
+* Es un _free and open-source_ (FOSS).
+* QUBEOS es un SO Desktop (personal use) que aprovecha el aislamiento de un hypervisor baremetal como puede ser el Proyecto libre X en + IntelVd (hardware)
+
+
+### Problemas de los sistemas operativos actuales
+
+Los sistemas operativos más populares para informática de escritorio, como Windows Mac OS X o los basados en GNU/Linux resultan insatisfactorios en cuanto a la seguridad. El principal problema es su inhabilidad para proporcionar aislamiento efectivo entre distintos programas ejecutandose en la misma máquina.
+
+Por ejemplo si el _web browser_ del usuario se ve comprometido el sistema operativo suele tener dificultades para proteger otras aplicaciones y datos de ser verse igualmente comprometidos. Análogamente, si algún componente del nucleo del sistema se ve comprometido (driver wifi) ninguno de los OS que mencionamos en el parrafo anterior puede defenderse de un compromiso total de las aplicaciones y datos del usuario.
+
+Tal situación es el resultado directo de algunas decisiones de diseño arquitectónico, que incluyen sobrecomplejitud de la API del OS, diseño inseguro de interfaces gráficas y la arquitectura monolítica del kernel.
+
+Parece más sencillo conseguir cierto aislamiento entre algunos de los procesos y datos del usuario que pretender solucionar todos los posíbles bugs y vulnerabilidades de cualquier sistema.
+
 #### Por que Qube OS respecto a lo clasico (kernel monoliticOS)
 
 Estamos acostumbrados a los trending OSs que vienen hasta preinstalados en hardware y ya compilados (algunos casos) en el que solo tienes el binario, además la arquitectura monolítica del Os no facilitan las labores de seguridad
+
+![alt text](https://github.com/softportal/MASTER_DOCS/blob/master/OS_SECURITY/monolithic.jpg)
 
 Ejemplos punto de entrada:
 
@@ -25,8 +48,6 @@ Ejemplos punto de entrada:
 Clave en cierta medida para la seguridad => Software libre (Community based).
 
 
-QUBEOS es un SO Desktop (personal use) orientado a seguridad aprovechando la isolation de un hypervisor baremetal como puede ser el Proyecto libre X en + IntelVd (hardware)
-
 
 ## Introducción basica hypervisores
 
@@ -35,6 +56,8 @@ Podemos distinguirlos en dos:
 
 * bare metal: Actuan sobre el propio HW
 * hosted: Estan por encima del SO
+
+![alt text](https://github.com/softportal/MASTER_DOCS/blob/master/OS_SECURITY/hyperviseur.png)
 
 Desde el punto de vista de la seguridad interesa **bare metal**
 
