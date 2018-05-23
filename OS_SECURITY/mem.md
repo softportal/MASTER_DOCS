@@ -1,45 +1,61 @@
-# Tema Presentación Resumen
+# QubeOs: Un Sistema Operativo confiable
 
-QubeOs: SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecutar untrusted code.
+SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecutar untrusted code.
+\vskip 0.2in
+Memoria creada para la asignatura de __Seguridad__, Master IOT (UCM)
 
+\vskip 0.5in
 
 ![Portada](qubeosLogo.png)
 
+\vskip 0.5in
 
 ## Alumnos
-    SERGIO A SEMEDI BARRANCO <ssemedi@ucm.es>
-    LUCAS SEGARRA FERNANDEZ <lsegar01@ucm.es>
-
+    SERGIO SEMEDI BARRANCO   <ssemedi@ucm.es>
+    LUCAS SEGARRA FERNANDEZ  <lsegar01@ucm.es>
 
 \newpage
 ## INDICE
 
+\vskip 0.4in
+
 * ¿Que es?
+
     * SUB
+
 * ¿Que es?
+
 * ¿Que es?
+
 * ¿Que es?
+
 * ¿Que es?
+
 * ¿Que es?
 
 
+\newpage
 ## RESUMEN
 ### [Presentación](http://slides.com/master_iot/qube)
 
-\newpage
 
 Enlace a los slides utilizados para la presentación de clase.
 
-### ¿Qué es QubeOs?
+\newpage
+## ¿Qué es QubeOs?
 
 * Es un sistema operativo orientado a la seguridad.
 * Es un _free and open-source_ (FOSS).
 * QUBEOS es un SO Desktop (personal use) que aprovecha el aislamiento de un hypervisor baremetal como puede ser el Proyecto libre X en + IntelVd (hardware)
 
+### Importancia
 
+\newpage
 ### Problemas de los sistemas operativos actuales
 
 Los sistemas operativos más populares para informática de escritorio, como Windows Mac OS X o los basados en GNU/Linux resultan insatisfactorios en cuanto a la seguridad. El principal problema es su inhabilidad para proporcionar aislamiento efectivo entre distintos programas ejecutandose en la misma máquina.
+
+![OSs](OSs.png)
 
 Por ejemplo si el _web browser_ del usuario se ve comprometido el sistema operativo suele tener dificultades para proteger otras aplicaciones y datos de ser verse igualmente comprometidos. Análogamente, si algún componente del nucleo del sistema se ve comprometido (driver wifi) ninguno de los OS que mencionamos en el parrafo anterior puede defenderse de un compromiso total de las aplicaciones y datos del usuario.
 
@@ -47,9 +63,13 @@ Tal situación es el resultado directo de algunas decisiones de diseño arquitec
 
 Parece más sencillo conseguir cierto aislamiento entre algunos de los procesos y datos del usuario que pretender solucionar todos los posíbles bugs y vulnerabilidades de cualquier sistema.
 
+
+\newpage
 #### Por que Qube OS respecto a lo clasico (kernel monoliticOS)
 
 Estamos acostumbrados a los trending OSs que vienen hasta preinstalados en hardware y ya compilados (algunos casos) en el que solo tienes el binario, además la arquitectura monolítica del Os no facilitan las labores de seguridad
+
+![Arquitectura monolítica](monolithic.jpg)
 
 
 Ejemplos punto de entrada:
@@ -64,6 +84,7 @@ Clave en cierta medida para la seguridad => Software libre (Community based).
 
 
 
+\newpage
 ## Introducción basica hypervisores
 
 Hypervisor es software, firmware or hardware que permite la creación de maquinas virtuales.
@@ -71,6 +92,8 @@ Podemos distinguirlos en dos:
 
 * bare metal: Actuan sobre el propio HW
 * hosted: Estan por encima del SO
+
+![hypervisores: tipos](hyperviseur.png)
 
 
 Desde el punto de vista de la seguridad interesa **bare metal**
@@ -82,13 +105,16 @@ Basicamente Comparamos una arquitectura Linux based (kvm) que funciona con el sc
     * small footprint, interface -> microkernel design
     * Linux based (Linux system running as dom0)
     * Driver isolation: main device driver for a system to run inside of a virtual machine
-    * Paravirtualization: Fully paravirtualized guests have been optimized to run as a virtual machin 
+    * Paravirtualization: Fully paravirtualized guests have been optimized to run as a virtual machine
 
 #### Gestion de memoria / espacio direcciones | IO EMULATOR
 
+\newpage
 ## Arquitectura QUBE OS orientada seguridad
 
 Implementa una estrategia de seguridad por aislamiento, para ello usa las tecnologías vistas anteriormente (Xen, Linux, Vt...) sumado a una arquitectura basada en dominios.
+
+![QubeOS overview](qubeos_main.png)
 
 - Networking subsystem (IOMMU/VT-d).
 - Storage subsystem
@@ -98,7 +124,8 @@ Implementa una estrategia de seguridad por aislamiento, para ello usa las tecnol
 
 Esto hace que comprometer cualquiera de los sistemas aislados no suponga un peligro real global.
 
-### Algunos Sistemas
+\newpage
+## Dominios
 
 #### AppVM
 
@@ -129,20 +156,42 @@ Este dominio es muy importante a nivel de ser comprometido por lo tanto **no deb
 Aqui encontramos lo referente a la parte de redes (drivers NICS, stacks de protocolos como 802.11, tcp/ip...).
 Interactua con las NICs físicas mediante un dominio (network domain) sin privilegios, todo gracias a Vt-d.
 
+\newpage
+## Dominio APPVM
 
-#### Reflexión.
+\newpage
+## Dominio STORAGE
+
+\newpage
+## Dominio NETWORKING
+
+\newpage
+## Dominio GUI
+
+\newpage
+## Caso de Uso
+
+\newpage
+## Reflexión final.
 
 QubeOs es un sistema operativo razonablemente seguro, que juntando varias tecnologias consigue ser una optativa bastante deseable en cuanto a cualquier uso informático orientado a Desktop se refiere.
 
 Se detallarán mas detalles técnicos en la presentación al igual de un caso de uso.
 
 
+\newpage
 ## Fuentes:
 
-* Wikipedia.com
-* qubes-os.org
-* Manual pdf arquitectura QUBE OS
-* Hacker News
-* doc.opensuse.org/documentation/leap/virtualization/html/book.virt/cha.kvm.intro.html
-* researchgate.net/figure/Xen-architecture-29_fig4_261411692
-* wiki.xen.org/wiki/Xen_Project_Software_Overview
+- Wikipedia.com
+
+- qubes-os.org
+
+- Manual pdf arquitectura QUBE OS
+
+- Hacker News
+
+- doc.opensuse.org/documentation/leap/virtualization/html/book.virt/cha.kvm.intro.html
+
+- researchgate.net/figure/Xen-architecture-29_fig4_261411692
+
+- wiki.xen.org/wiki/Xen_Project_Software_Overview
