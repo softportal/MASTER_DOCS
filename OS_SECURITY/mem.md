@@ -13,13 +13,12 @@ Memoria creada para la asignatura de __Seguridad__, Master IOT (UCM)
 ## Alumnos
     SERGIO SEMEDI BARRANCO   <ssemedi@ucm.es>
     LUCAS SEGARRA FERNANDEZ  <lsegar01@ucm.es>
+### Presentación: http://slides.com/master_iot/qube
 
 \newpage
 ## INDICE
 
 \vskip 0.4in
-
-* RESUMEN ..............................
 
 * ¿Que es? .............................
 
@@ -55,20 +54,29 @@ Memoria creada para la asignatura de __Seguridad__, Master IOT (UCM)
 
 
 \newpage
-## RESUMEN
-### [Presentación](http://slides.com/master_iot/qube)
-
-
-Enlace a los slides utilizados para la presentación de clase.
-
-\newpage
 ## ¿Qué es QubeOs?
-
-* Es un sistema operativo orientado a la seguridad.
-* Es un _free and open-source_ (FOSS).
-* QUBEOS es un SO Desktop (personal use) que aprovecha el aislamiento de un hypervisor baremetal como puede ser el Proyecto libre X en + IntelVd (hardware)
+ QubeOS es un sistema operativo orientado a la seguridad. Es un _free and open-source_, es un SO Desktop (personal use) que aprovecha el aislamiento de un hypervisor baremetal como puede ser el Proyecto libre Xen + IntelVd (hardware)
 
 ### Importancia
+
+El sistema operativo es una de las piezas claves de la informátia en genera, este es el encargado que ejecutar todos los programas en un ordenador y de controlar del Hardware.
+
+En estos tiempos conceptos como Cloud, Internet of Things o Big Data son muy recurrentes, al final todos estos términos no dejan de ser cambios de paradigma que no afectan en mucho a las técnicas de seguridad normalmente usadas hasta ahora.
+
+Hablando entonces del máximo exponente que vamos a querer proteger en cualquier sistema informático es el SO.
+Aprovecharemos QUBEOs para hacer una pequeña introdución a tendencias de seguridad en arquitecturas de sistemas Operativos.
+
+Esta clase de tecnologías/sistemas son bastante comunes en la actualidad, como hemos dicho siendo muy parecido a lo que puede llamarse por ejemplo la infraestructura cloud que hará de controlador de todos nuestros dispositivos iot.
+```
+ejemplo:
+
+        Cluster de maquinas físicas conectadas en LAN con hypervisores instalados junto a un frontend
+        para proveer un servicio de cloud público donde podrás enganchar dispositivos IOT.
+
+        Puede ser este el ejemplo de marcas como AWS, Azure o IBM Cloud
+```
+
+Clave en cierta medida para la seguridad => Software libre (Community based).
 
 \newpage
 ### Problemas de los sistemas operativos actuales
@@ -86,53 +94,82 @@ Parece más sencillo conseguir cierto aislamiento entre algunos de los procesos 
 
 \newpage
 #### Por que Qube OS respecto a lo clasico (kernel monoliticOS)
-
-Estamos acostumbrados a los trending OSs que vienen hasta preinstalados en hardware y ya compilados (algunos casos) en el que solo tienes el binario, además la arquitectura monolítica del Os no facilitan las labores de seguridad
+Estamos acostumbrados a los trending OSs que vienen hasta preinstalados en hardware y ya compilados (algunos casos) en el que solo tienes el binario, además la arquitectura monolítica del Os no facilitan las labores de seguridad:
 
 ![Arquitectura monolítica](monolithic.jpg)
 
+Esto es debido a la complejidad que supone esta (observar foto arriba). En este diseño el SO tiene pleno control y existen zonas separadas, a simple vista el Kernel (interactua HW) y userLand (donde el usuario actua y ejecuta) una forma de ver esto es desde el punto de vista de las llamadas al sistema (syscall) que invocara el usuario cuando necesite ciertas labores de privilegio.
+Sabiendo esto es facil de predecir que esta fina barrera puede suponer problema a la hora de hablar de seguridad.
 
 Ejemplos punto de entrada:
-
+```
            Correo
            Navegacion no deseada
            Nic -> Wifi
            Vulnerabilidades Software
-           ...
-
-Clave en cierta medida para la seguridad => Software libre (Community based).
-
+```
 
 
 \newpage
 ## Introducción basica hypervisores
 
 Hypervisor es software, firmware or hardware que permite la creación de maquinas virtuales.
-Podemos distinguirlos en dos:
+Desde el punto de vista de arquitectura de sistemas operativos 'seguras'es casi la parte mas importante de esta, hablando de QubeOs ya que la seguridad esta orientada al aislamiento y por lo tanto tendremos a un hypervisor por encima.
+
+Estos hypervisores rapidamente podriamos distinguirlos en dos formas:
 
 * bare metal: Actuan sobre el propio HW
 * hosted: Estan por encima del SO
 
 ![hypervisores: tipos](hyperviseur.png)
 
+Desde el punto de vista de la seguridad interesa **bare metal** en esta memoria vamos a tratar KVM y XEN como ejemplos principales de como funcionan los hypersores centrandonos finalmente en este último (XEN).
 
-Desde el punto de vista de la seguridad interesa **bare metal**
-
+\newpage
 ####  detalles tecnicos comparativos XEN - KVM
 
-Basicamente Comparamos una arquitectura Linux based (kvm) que funciona con el scheduler y los user processes de linux sumados al modulo del kernel (hardware) con XEN:
+Estos hypervisores son __bare metal__ y son los que nos van a interesar a la hora de hablar de seguridad. Esta razón es simple, como hemos visto en el diagrama anterior los de tipo hosted nos brindan una capa de abstracción mas sobré la virtualización, el SO anfitrión sigue controlando todo y este punto no nos interesa (sin meternos en ningún término de rendimiento).
+
+XEN Y KVM son hypervisores bare-metal, en KVM aprovechamos la arquitectura monolítica que nos brinda Linux para tener un modulo en el kernel interactuado con qemu (emulador) con XEN por el otro lado usamos otras 'tecnologías' o técnicas como puede ser microkernel o paravirtualización.
+
+##### KVM
+\vskip 0.3in
+
+![KVM Arquitectura](kvm_qemu.png)
+Gracias a el modulo KVM este hypervisor es baremetal ya que permite la interación directa con hardware, gracias a QEMU puede realizar la emulación. El problema de este hypervisor en cuanto a seguridad se refiere reside en que básicamente seguimos teniendo el mismo problema del kernel monolítico, las maquinas virtuales en este caso siguen siendo user process manejados por el scheduler de linux, al igual que la interacción kvm - qemu.
+
+
+
+\newpage
+##### XEN
+\vskip 0.3in
+![XEN Arquitectura](Xen-architecture.png)
+
+En el caso de Xen este hypervisor nos interesa más, sigue un diseño microkernel, aunque parezca que este hypervisor simplemente va a ganar a KVM por no usar Linux vanila como base esto es erróneo, ya que Xen aunque no lo parezca también tiene que hacer uso de un sistema Linux.
+
+Sin embargo desde el punto de vista seguro Xen nos brindará ciertas características importantes:
 
     * small footprint, interface -> microkernel design
-    * Linux based (Linux system running as dom0)
-    * Driver isolation: main device driver for a system to run inside of a virtual machine
-    * Paravirtualization: Fully paravirtualized guests have been optimized to run as a virtual machine
+        Muy interesante debido a que nos interesa tener un software pequeño.
 
-#### Gestion de memoria / espacio direcciones | IO EMULATOR
+    * Linux based (Linux system running as dom0)
+        Podemos aprovechar Linux como main control stack de Xen.
+
+    * Driver isolation: main device driver for a system to run inside of a virtual machine
+        Esta es la característica mas importante ya que nos permite separar un driver
+        principal de las VMs.
+
+    * Paravirtualization: Fully paravirtualized guests
+        Nos interesa desde el punto de vista del rendimiento y aprovechamiento HW.
 
 \newpage
 ## Arquitectura QUBE OS orientada seguridad
 
-Implementa una estrategia de seguridad por aislamiento, para ello usa las tecnologías vistas anteriormente (Xen, Linux, Vt...) sumado a una arquitectura basada en dominios.
+QubeOs entonces es un sistema operativo que utiliza tecnologías como las ya habladas previamente, como puede ser XEN/arquitectura de dominios junto con Intel VTx (Hardware).
+
+Implementa una estrategia de seguridad por aislamiento y compartimiento, con este SO podemos entonces separar de forma optima varias 'aplicaciones' de uso personal totalmente aisladas unas de otras creando así una capa de seguridad robusta.
+
+Esto en gran parte lo conseguimos gracias al funcionamiento de Xen y la capacidad de llevar main device drivers (responsables de controlar HW) a dominios particulares como podemos ver en la siguiente imagen.
 
 ![QubeOS overview](qubeos_main.png)
 
@@ -142,7 +179,7 @@ Implementa una estrategia de seguridad por aislamiento, para ello usa las tecnol
 - Graphics
 - User Apps/VMs
 
-Esto hace que comprometer cualquiera de los sistemas aislados no suponga un peligro real global.
+Esto hace que comprometer cualquiera de los sistemas aislados no suponga un peligro real global para el SO.
 
 \newpage
 ## Dominios
@@ -178,12 +215,42 @@ Interactua con las NICs físicas mediante un dominio (network domain) sin privil
 
 \newpage
 ## Dominio APPVM
+Este dominio es usado para hostear las aplicaciones del usuario, basicamente las tareas que vamos a realizar del sistema operativa serán aqui.
+
+Esto se realiza gracias a los demás dominios que nos ayudaran a la hora de realizar diversas acciones como pueden ser conectarnos con el exterior, usar espacio de disco duro de forma eficiente o poder renderizar sobre tu pantalla de forma óptima
+
+Todo esto introduce cierta complejidad a la hora del diseño de este SO, pero gracias a ella por otra parte tendremos la capa de seguridad necesaria.
+![Screenshot](screen.png)
 
 \newpage
 ## Dominio STORAGE
+![storage](storage.png)
+Este dominio va a tener la capacidad de controlar el sistema de ficheros de nuestro SO.
+Debido a las APPVMs tener un sistema de ficheros para cada maquina no sería para nada optimo, es aqui donde entra en juego el storage domain.
+
+Debido a lo vulnerable que puede llegar a ser un SO es importante que el dominio de almacenamiento no tenga privilegios.
+
+Este dominio tendrá control sobre los dispositivos de almacenamiento como pueden ser USB, CD/DVD.
+Para resolver el problema de seguridad de este dominio y su comunicación con los restantes QUBEOS lo resuelve usando criptografia para proteger el FS. De esta forma el propio dominio de almacenamiento no puede leer datos confidenciales de otros dominios.
 
 \newpage
 ## Dominio NETWORKING
+![Dominio redes](network00.png)
+
+Este dominio es un dominio muy "delicado" hay que tener en cuenta que la base principal de ataques a cualquier ordenador puede ser directamente la red, ya sea por medio de una LAN privada o directamente internet.
+
+Las pilas de redes son complejas (TCP/IP) y comprometer algún punto es una situación de riesgo bastante crítica del So ya que la tarjeta de red un cualquier ordenador la suele manejar el propio kernel. Es por eso por lo que QUBEOS crea este dominio de networking no privilegiado donde almacenaremos los drivers relacionados con neworking (NICS, 802 11, TCP, Firewalling...).
+
+\newpage
+#### Inter-Vm networking
+
+Cada dominio app del usuario usa una tarjeta de red virtual (XEN) como eth0 que se conectará al network domain:
+
+![inter net VM](network01.png)
+    AppVM1 |eth0 <--------->vif1.0| network domain <Drivers/NAT>|REAL NIC <---> Internet
+
+Gracias a que el dominio no privilegiado y a la propiedad no inter-vm networking en caso de que nuestro dominio de redes se viera comprometido asegurariamos todas las maquinas restantes.
+
 
 \newpage
 ## Dominio GUI
