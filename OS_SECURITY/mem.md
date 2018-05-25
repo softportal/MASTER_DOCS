@@ -5,9 +5,7 @@ SO centrado en la seguridad personal del usuario sobre todo a la hora de ejecuta
 Memoria creada para la asignatura de __Seguridad__, Master IOT (UCM)
 
 \vskip 0.5in
-
 ![Portada](qubeosLogo.png)
-
 \vskip 0.5in
 
 ## Alumnos
@@ -70,8 +68,11 @@ Esta clase de tecnologías/sistemas son bastante comunes en la actualidad, como 
 ```
 ejemplo:
 
-        Cluster de maquinas físicas conectadas en LAN con hypervisores instalados junto a un frontend
-        para proveer un servicio de cloud público donde podrás enganchar dispositivos IOT.
+        Cluster de maquinas físicas conectadas en LAN
+        con hypervisores instalados junto a un frontend
+
+        para proveer un servicio de cloud público donde
+        podrás enganchar dispositivos IOT.
 
         Puede ser este el ejemplo de marcas como AWS, Azure o IBM Cloud
 ```
@@ -136,16 +137,20 @@ XEN Y KVM son hypervisores bare-metal, en KVM aprovechamos la arquitectura monol
 \vskip 0.3in
 
 ![KVM Arquitectura](kvm_qemu.png)
+
 Gracias a el modulo KVM este hypervisor es baremetal ya que permite la interación directa con hardware, gracias a QEMU puede realizar la emulación. El problema de este hypervisor en cuanto a seguridad se refiere reside en que básicamente seguimos teniendo el mismo problema del kernel monolítico, las maquinas virtuales en este caso siguen siendo user process manejados por el scheduler de linux, al igual que la interacción kvm - qemu.
 
-
-
-\newpage
 ##### XEN
+
 \vskip 0.3in
+
 ![XEN Arquitectura](Xen-architecture.png)
 
 En el caso de Xen este hypervisor nos interesa más, sigue un diseño microkernel, aunque parezca que este hypervisor simplemente va a ganar a KVM por no usar Linux vanila como base esto es erróneo, ya que Xen aunque no lo parezca también tiene que hacer uso de un sistema Linux.
+
+\newpage
+
+**Características**
 
 Sin embargo desde el punto de vista seguro Xen nos brindará ciertas características importantes:
 
@@ -215,16 +220,24 @@ Interactua con las NICs físicas mediante un dominio (network domain) sin privil
 
 \newpage
 ## Dominio APPVM
+
 Este dominio es usado para hostear las aplicaciones del usuario, basicamente las tareas que vamos a realizar del sistema operativa serán aqui.
 
 Esto se realiza gracias a los demás dominios que nos ayudaran a la hora de realizar diversas acciones como pueden ser conectarnos con el exterior, usar espacio de disco duro de forma eficiente o poder renderizar sobre tu pantalla de forma óptima
 
 Todo esto introduce cierta complejidad a la hora del diseño de este SO, pero gracias a ella por otra parte tendremos la capa de seguridad necesaria.
-![Screenshot](screen.png)
+
+\vskip 0.3in
+
+![Screenshot usuario](screen.png)
 
 \newpage
+
 ## Dominio STORAGE
-![storage](storage.png)
+
+![arquitectura almacenamiento 01](storagee.png)
+
+\vskip 0.3in
 Este dominio va a tener la capacidad de controlar el sistema de ficheros de nuestro SO.
 Debido a las APPVMs tener un sistema de ficheros para cada maquina no sería para nada optimo, es aqui donde entra en juego el storage domain.
 
@@ -234,7 +247,22 @@ Este dominio tendrá control sobre los dispositivos de almacenamiento como puede
 Para resolver el problema de seguridad de este dominio y su comunicación con los restantes QUBEOS lo resuelve usando criptografia para proteger el FS. De esta forma el propio dominio de almacenamiento no puede leer datos confidenciales de otros dominios.
 
 \newpage
+
+#### Compartiendo / entre todas las aplicaciones.
+
+En QubeOs se van a poder poder tener varias aplicaciones aisladas gracias a XEN, pero en terminos de File System esto no puede ser muy rentable  por eso QubeOs intenta resolver este problema de dos formas:
+
+
+* teniendo un root FS (/) que se va a compartir entre todas las APPS (ej: /boot, /bin, /usr)
+* datos privados separados en cada app (/home, /usr/local...).
+
+Sin embargo esta separación que hemos propuesto no es un problema tan facil de resolver en Linux ya que es muy facil que falle si tiene que utiizar partes del FS importantes que solo son read only. Para solventar este problema se usa el __device mapper__ (dm, Linux 2.6) para crear un sistema copy-on-write (COW).
+
+![arquitectura almacenamiento 02](storage.png)
+
+\newpage
 ## Dominio NETWORKING
+
 ![Dominio redes](network00.png)
 
 Este dominio es un dominio muy "delicado" hay que tener en cuenta que la base principal de ataques a cualquier ordenador puede ser directamente la red, ya sea por medio de una LAN privada o directamente internet.
@@ -247,6 +275,7 @@ Las pilas de redes son complejas (TCP/IP) y comprometer algún punto es una situ
 Cada dominio app del usuario usa una tarjeta de red virtual (XEN) como eth0 que se conectará al network domain:
 
 ![inter net VM](network01.png)
+
     AppVM1 |eth0 <--------->vif1.0| network domain <Drivers/NAT>|REAL NIC <---> Internet
 
 Gracias a que el dominio no privilegiado y a la propiedad no inter-vm networking en caso de que nuestro dominio de redes se viera comprometido asegurariamos todas las maquinas restantes.
@@ -254,6 +283,25 @@ Gracias a que el dominio no privilegiado y a la propiedad no inter-vm networking
 
 \newpage
 ## Dominio GUI
+
+![arquitectura graphics](GUI.png)
+
+Este dominio esta dedicado como su nombre indica a la interfaz gráfica, un elemento en todo software de lo mas delicado.
+
+Este dominio es de empezar importancia, se podría decir que despues del propio hypervisor (XEN) este dominio es la última parte de el SO que quieras que se vea comprometida ya que si el usuario adquiere control sobre este subsistema __si__ que podría interactuar con cualquier aplicación del usuario.
+
+Una discusión importante de este dominio es si debe tener privilegios o no, en el caso de QUBEos finalmente esto caerá sobre el domnio administrativo de Xen (Dom0) que tiene privilegios, esto es debido a que aunque hiciesemos un dominio aislado como en los casos anteriores, al resultar algo tan delicado como puede ser la GUI el atacante estaría comprometiendo todas las VMs igualmente.
+
+\newpage
+**Funcionamiento:**
+
+* Existe un Appviewer al que puedes mandar notificaciones sobre nuevas ventanes emergentes (virtual desktop).
+
+* Appviewer recibe notificaciones sobre cualquier cambio.
+
+* Manejo de Focus, basicamente permite al usuario cambiar libremente de ventana en dominios diferentes.
+
+* Se encarga del manejo de interrupciones IO como pueden ser el ratón o el telcado.
 
 \newpage
 ## Caso de Uso
@@ -274,8 +322,12 @@ Esto es solo un ejemplo de TODO TERMINAR
 ## Reflexión final.
 
 QubeOs es un sistema operativo razonablemente seguro, que juntando varias tecnologias consigue ser una optativa bastante deseable en cuanto a cualquier uso informático orientado a Desktop se refiere.
+En la informática el SO suele ser la parte mas delicada de cualquier sistema, con el avance tan rápido que tiene toda la tecnología en general es de esperar de que tendencias más clásicas como puede ser la arquitectura de Sistemas operativos normales, los antivirus o los firewalls __no valen__.
 
-Se detallarán mas detalles técnicos en la presentación al igual de un caso de uso.
+![esquema iot](final.png)
+
+Aunque en un principio este documento se centre en la seguridad personal (Desktop) el proposito de esta va mas allá de esto, es importante entender que en el mundo en el que vivimos actualmente sobre los CPD que podemos encontrar en cualquier empresa encontraremos una arquitectura 'similar' a la que tiene QUBEOS aunque en vez de aplicarlo a un solo ordenador y SO esto se aplique mas a un gran Cluster y a muchos ordenadores (ej: CPD que usa docker-machine y docker para tener mas de 100 aplicaciones conectadas entre sí), el IOT por lo tanto juega un papel bastante importante en todo esto ya que aunque sea importante proteger cualquier dipositivo esta claro que la parte mas importante y delicada siempre la tendremos en el __cloud__.
+
 
 
 \newpage
