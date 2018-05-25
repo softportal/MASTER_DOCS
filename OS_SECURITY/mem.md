@@ -18,37 +18,37 @@ Memoria creada para la asignatura de __Seguridad__, Master IOT (UCM)
 
 \vskip 0.4in
 
-* ¿Que es? .............................
+* ¿Que es? .............................3
 
-    * Importancia ......................
+    * Importancia .....................3
 
-    * Problema SOs actuales ............
+    * Problema SOs actuales ...........4
 
-    * Por que? .........................
+    * Por que? .........................5
 
-* Hypervisores .........................
+* Hypervisores ..........................6
 
-    * Detalles Técnicos XEN - KVM ......
+    * Detalles Técnicos XEN - KVM ....7
 
-    * Aspectos relevantes ..............
+    * Aspectos relevantes ...............9
 
-* Arquitectura QUBEOS ..................
+* Arquitectura QUBEOS ................10
 
-* Dominios .............................
+* Dominios ..............................11
 
-    * APPVM ............................
+    * APPVM ..........................12
 
-    * STORAGE ..........................
+    * STORAGE .......................13
 
-    * NETWORKING .......................
+    * NETWORKING ..................15
 
-    * GUI ..............................
+    * GUI ..............................17
 
-* Caso de Uso ..........................
+* Caso de Uso ...........................19
 
-* Reflexión Final ......................
+* Reflexión Final ........................21
 
-* Fuentes ..............................
+* Fuentes ................................22
 
 
 \newpage
@@ -326,7 +326,7 @@ En la informática el SO suele ser la parte mas delicada de cualquier sistema, c
 
 ![esquema iot](final.png)
 
-Aunque en un principio este documento se centre en la seguridad personal (Desktop) el proposito de esta va mas allá de esto, es importante entender que en el mundo en el que vivimos actualmente sobre los CPD que podemos encontrar en cualquier empresa encontraremos una arquitectura 'similar' a la que tiene QUBEOS aunque en vez de aplicarlo a un solo ordenador y SO esto se aplique mas a un gran Cluster y a muchos ordenadores (ej: CPD que usa docker-machine y docker para tener mas de 100 aplicaciones conectadas entre sí), el IOT por lo tanto juega un papel bastante importante en todo esto ya que aunque sea importante proteger cualquier dipositivo esta claro que la parte mas importante y delicada siempre la tendremos en el __cloud__.
+Aunque en un principio este documento se centre en la seguridad personal (Desktop), es importante entender que en el mundo en el que vivimos actualmente sobre los CPD que podemos encontrar en cualquier empresa encontraremos una arquitectura 'similar' a la que tiene QUBEOS aunque en vez de aplicarlo a un solo ordenador y SO esto se aplique mas a un gran Cluster y a muchos ordenadores (ej: CPD que usa docker-machine y docker para tener mas de 100 aplicaciones conectadas entre sí), el IOT por lo tanto juega un papel bastante importante en todo esto ya que aunque sea importante proteger cualquier dipositivo esta claro que la parte mas importante y delicada siempre la tendremos en el __cloud__.
 
 
 
